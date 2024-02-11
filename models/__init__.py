@@ -1,13 +1,4 @@
 #!/usr/bin/python3
-from .engine.file_storage import FileStorage
-"""
-Initializes  the module global (singleton) variables
-"""
+from models.engine import storage
 
-"""
-Retrieves the storage instance
-"""
-
-
-storage = FileStorage()
-storage.reload()
+__all__ = ["BaseModel"]
