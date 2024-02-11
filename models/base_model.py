@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 
 """
-This file defines  the BaseModel class 
-that defines all common attributes/methods 
+This file defines  the BaseModel class
+that defines all common attributes/methods
 for other classes
 """
 
@@ -13,18 +13,18 @@ import models
 
 class BaseModel:
     """BaseModel class"""
-    
+
     def __init__(self, *args, **kwargs):
         """ Constructor of the  class  """
 
         """Initialize the attributes if no arguments was passed"""
-        if  not kwargs:
+        if not kwargs:
             self.id = str(uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
             models.storage.new(self)
             return
-        """in case their is no ID"""
+
         if 'id' not in kwargs:
             kwargs['id'] = str(uuid4())
         self.id = kwargs['id']
@@ -34,17 +34,15 @@ class BaseModel:
                 continue
         if "created_at" in kwargs:
             self.created_at = datetime.strptime(
-                    kwargs['created_at'],
-                    '%Y-%m-%dT%H:%M:%S.%f')
+                    kwargs['created_at'], '%Y-%m-%dT%H:%M:%S.%f')
         if "updated_at" in kwargs:
             self.updated_at = datetime.strptime(
-                    kwargs['updated_at'],
-                    '%Y-%m-%dT%H:%M:%S.%f')
+                    kwargs['updated_at'], '%Y-%m-%dT%H:%M:%S.%f')
 
     def __str__(self):
         """new str representation of self"""
         newrep = "[{}] ({}) {}"
-        return newrep.format(type(self).__name__,self.id,self.__dict__)
+        return newrep.format(type(self).__name__, self.id, self.__dict__)
 
     def save(self):
         """stores the updated attribute"""
