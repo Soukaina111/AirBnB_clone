@@ -8,6 +8,7 @@ import sys
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
+
 from models.place import Place
 from models.state import State
 from models.city import City
@@ -116,15 +117,16 @@ class HBNBCommand(cmd.Cmd):
         Prints all string representations of instances based on
         the class name, or all instances if no class name is provided.
         """
-        args = arg.split()
-        if not args:
+        if not arg:
             print([str(instance) for instance in storage.all(User).values()])
         else:
             try:
-                cls_name = args[0]
+                cls_name = arg
                 cls = eval(cls_name)
-                instances = storage.all(cls).values()
-                print([str(instance) for instance in instances])
+                if cls_name == 'User':
+                    print([str(instance) for key, instance in storage.all(User).items()])
+                else:
+                    print("** class doesn't exist **")
             except NameError:
                 print("** class doesn't exist **")
 
