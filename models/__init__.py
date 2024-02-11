@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-rom .engine.file_storage import FileStorage
+from .engine.file_storage import FileStorage
 """
 Initializes  the module global (singleton) variables
 """

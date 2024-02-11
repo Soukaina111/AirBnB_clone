@@ -1,87 +1,79 @@
 #!/usr/bin/python3
+"""The FileStorage"""
+
 import json
+from os.path import exists
+from models.user import User
 from models.base_model import BaseModel
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.place import Place
-from models.review import Review
 
 class FileStorage:
     """
-    This class represents a file-based storage system for objects.
-    It provides methods for storing, retrieving, and deleting objects in a JSON file.
+    Serializes instances to a JSON file and deserializes JSON files to instances.
+
+    Private Class Attributes:
+        __file_path (str): Path to the JSON file.
+        __objects (dict): Dictionary to store all objects by <class name>.id.
+
+    Public Instance Methods:
+        all(self): Returns the dictionary __objects.
+        new(self, obj): Sets the obj with the key <obj class name>.id in __objects.
+        save(self): Serializes __objects to the JSON file.
+        reload(self): Deserializes the JSON file to __objects.
     """
 
     __file_path = "file.json"
     __objects = {}
-    classes = {
+
+
+    CLASSES = {
         "BaseModel": BaseModel,
-        "State": State,
-        "City": City,
-        "Amenity": Amenity,
-        "Place": Place,
-        "Review": Review
+        "User": User
+        # Add other classes here if needed
     }
 
     def all(self):
         """
-        Returns a dictionary containing all objects stored in the storage.
-        The keys of the dictionary are in the format '<class name>.<object id>',
-        and the values are the actual object instances.
+        Returns the dictionary __objects.
+
+        Returns:
+            dict: The dictionary __objects.
         """
         return self.__objects
 
     def new(self, obj):
         """
-        Adds a new object to the storage.
+        Sets the obj with the key <obj class name>.id in __objects.
 
         Args:
-            obj: The object to be added to the storage.
+            obj (BaseModel): The object to be added to __objects.
         """
         key = "{}.{}".format(obj.__class__.__name__, obj.id)
         self.__objects[key] = obj
 
     def save(self):
         """
-        Serializes the objects in the storage to a JSON file.
+        Serializes __objects to the JSON file.
         """
-        serialized_objects = {}
+        obj_dict = {}
         for key, obj in self.__objects.items():
-            serialized_objects[key] = obj.to_dict()
-        with open(self.__file_path, "w") as file:
-            json.dump(serialized_objects, file)
+            obj_dict[key] = obj.to_dict()
+
+        with open(self.__file_path, 'w') as file:
+            json.dump(obj_dict, file)
 
     def reload(self):
         """
-        Reloads objects from the JSON file and populates the storage.
+        Deserializes the JSON file to __objects.
         """
-        try:
-            with open(self.__file_path, "r") as file:
-                serialized_objects = json.load(file)
-                for key, value in serialized_objects.items():
-                    class_name, obj_id = key.split(".")
-                    cls = self.classes[class_name]
-                    obj = cls(**value)
-                    self.__objects[key] = obj
-        except FileNotFoundError:
-            pass
+        if exists(self.__file_path):
+            with open(self.__file_path, 'r') as file:
+                obj_dict = json.load(file)
 
-    def delete(self, obj=None):
-        """
-        Deletes an object from the storage.
+            for key, obj_data in obj_dict.items():
+                class_name, obj_id = key.split('.')
+                class_module = __import__("models.{}".format(class_name), fromlist=[class_name])
+                class_ = getattr(class_module, class_name)
+                obj = class_(**obj_data)
+                self.__objects[key] = obj
 
-        Args:
-            obj: The object to be deleted from the storage.
-        """
-        if obj is not None:
-            key = "{}.{}".format(obj.__class__.__name__, obj.id)
-            if key in self.__objects:
-                del self.__objects[key]
-                self.save()
 
-    def close(self):
-        """
-        Closes the storage and reloads any saved objects.
-        """
-        self.reload()
