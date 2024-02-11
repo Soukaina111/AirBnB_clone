@@ -35,38 +35,40 @@ class HBNBCommand(Cmd):
         pass
 
     def do_create(self, line):
-            """Creates a new instance of a model name"""
-            line = line.split()
+        """Creates a new instance of a model name"""
 
-            if len(line) ==0:
-                print("** class name missing **")
-            elif line[0] not in Entities:
-                print("** class doesn't exist **")
-            elif len(line) == 1:
-                searched = eval(line[0])()
-                print(searched.id)
-                searched.save()
-            else:
-                print("** Can't create because their is too many arguments **")
+        line = line.split()
 
+        if len(line) == 0:
+            print("** class name missing **")
+        elif line[0] not in Entities:
+            print("** class doesn't exist **")
+        elif len(line) == 1:
+            searched = eval(line[0])()
+            print(searched.id)
+            searched.save()
+        else:
+            print("** Can't create because their is too many arguments **")
 
     def do_show(self, line):
-            """Prints the string representation of an instance based on the class name and id"""
-            input = line.split()
-            if not input:
-                print("** class name missing **")
-            elif len(input) == 1:
-                print("** instance id missing **")
-            elif len(input) == 2:
-                try:
-                    obj = storage.search_id(*input)
-                    print(obj)
-                except ModelNotFoundError:
-                    print("** class doesn't exist **")
-                except InstanceNotFoundError:
-                    print("** no instance found **")
-            else:
-                    print("** Too many arguments for show **")
+        """Prints the string representation of an
+        instance based on the class name and id"""
+
+        input = line.split()
+        if not input:
+            print("** class name missing **")
+        elif len(input) == 1:
+            print("** instance id missing **")
+        elif len(input) == 2:
+            try:
+                obj = storage.search_id(*input)
+                print(obj)
+            except ModelNotFoundError:
+                print("** class doesn't exist **")
+            except InstanceNotFoundError:
+                print("** no instance found **")
+        else:
+            print("** Too many arguments for show **")
 
     def do_destroy(self, line):
         """Removes an instance of a given entity using id and class model"""
@@ -85,19 +87,19 @@ class HBNBCommand(Cmd):
                 print("** no instance found **")
         else:
             print("** There is too  many arguments To destroy **")
-            
 
     def do_all(self, line):
-                """Display string representations of all instances of a given class."""
-                line = line.split()
-                if len(line) < 2:
-                    try:
-                        print(storage.retrieve_data(*line))
-                    except ModelNotFoundError:
-                        print("** class doesn't exist **")
-                    else:
-                        print("** Too many arguments for all **")
+        """Display string representations of
+        all instances of a given class."""
 
+        line = line.split()
+        if len(line) < 2:
+            try:
+                print(storage.retrieve_data(*line))
+            except ModelNotFoundError:
+                print("** class doesn't exist **")
+            else:
+                print("** Too many arguments for all **")
 
     def do_update(self, line):
         """Updates an instance based on its id"""
@@ -117,7 +119,6 @@ class HBNBCommand(Cmd):
                 print("** class doesn't exist **")
             except InstanceNotFoundError:
                 print("** no instance found **")
-
 
 
 if _name_ == "_main_":
