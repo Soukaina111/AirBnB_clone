@@ -1,124 +1,87 @@
 #!/usr/bin/python3
-
-"""
-This file is used to define the storage of 
-the project AirBnB.
-"""
-
 import json
-from json.decoder import JSONDecodeError
-from models.engine.errors import *
 from models.base_model import BaseModel
-from models.user import User
 from models.state import State
-from datetime import datetime
 from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 
-
 class FileStorage:
     """
-    This is  the fileStorage    like a database for our PrOJECT
+    This class represents a file-based storage system for objects.
+    It provides methods for storing, retrieving, and deleting objects in a JSON file.
     """
 
-    __objects: dict = {}
-    __file_path: str = 'file.json'
-    models = (
-            "BaseModel",
-            "User", "City", "State", "Place",
-            "Amenity", "Review"
-            )
-
-    def __init__(self):
-        """Initializer"""
-        pass
+    __file_path = "file.json"
+    __objects = {}
+    classes = {
+        "BaseModel": BaseModel,
+        "State": State,
+        "City": City,
+        "Amenity": Amenity,
+        "Place": Place,
+        "Review": Review
+    }
 
     def all(self):
-        """displays the stored data"""
-        return FileStorage.__objects
+        """
+        Returns a dictionary containing all objects stored in the storage.
+        The keys of the dictionary are in the format '<class name>.<object id>',
+        and the values are the actual object instances.
+        """
+        return self.__objects
 
-    def new(self, obje):
-        """add a new instance to the store"""
-        key = "{}.{}".format(type(obje).__name__, obje.id)
-        FileStorage.__objects[key] = obje
+    def new(self, obj):
+        """
+        Adds a new object to the storage.
+
+        Args:
+            obj: The object to be added to the storage.
+        """
+        key = "{}.{}".format(obj.__class__.__name__, obj.id)
+        self.__objects[key] = obj
 
     def save(self):
-            """Serialization conversion and storage"""
-            to_ser = {k: v.to_dict() for k, v in self.__objects.items()}
-            with open(FileStorage.__file_path, "w") as file:
-             json.dump(to_ser, file)
-
+        """
+        Serializes the objects in the storage to a JSON file.
+        """
+        serialized_objects = {}
+        for key, obj in self.__objects.items():
+            serialized_objects[key] = obj.to_dict()
+        with open(self.__file_path, "w") as file:
+            json.dump(serialized_objects, file)
 
     def reload(self):
-        """Deserialization and storage"""
+        """
+        Reloads objects from the JSON file and populates the storage.
+        """
         try:
-            to_deser = {}
-            with open(FileStorage.__file_path, "r") as file:
-                to_deser = json.loads(file.read())
-            FileStorage.__objects = {
-                k:
-                    eval(obj["__class__"])(**obj)
-                    for k, obj in to_deser.items()}
-        except (FileNotFoundError, JSONDecodeError):
+            with open(self.__file_path, "r") as file:
+                serialized_objects = json.load(file)
+                for key, value in serialized_objects.items():
+                    class_name, obj_id = key.split(".")
+                    cls = self.classes[class_name]
+                    obj = cls(**value)
+                    self.__objects[key] = obj
+        except FileNotFoundError:
             pass
 
+    def delete(self, obj=None):
+        """
+        Deletes an object from the storage.
 
-    def search_id(self, mdl, object_id):
-        """search an instance using the id  we passed as an argument"""
-        FS = FileStorage
-        if mdl not in FS.models:
-            raise ModelNotFoundError(mdl)
-        key = mdl + "." + object_id
-        if key not in FS.__objects:
-            raise InstanceNotFoundError(object_id, mdl)
+        Args:
+            obj: The object to be deleted from the storage.
+        """
+        if obj is not None:
+            key = "{}.{}".format(obj.__class__.__name__, obj.id)
+            if key in self.__objects:
+                del self.__objects[key]
+                self.save()
 
-        return FS.__objects[key]
-
-
-    def destroy_id(self, entity, obj_id):
-        """destroys an instance using the id  we pass as an argument"""
-        FS = FileStorage
-        if entity not in FS.models:
-            raise ModelNotFoundError(entity)
-
-        k = entity + "." + obj_id
-        if k not in FS.__objects:
-            raise InstanceNotFoundError(obj_id, entity)
-
-        del FS.__objects[k]
-        self.save()
-
-
-    def retrieve_data(self, entity=""):
-        """Retrieves all object of an entity"""
-        if entity and entity not in FileStorage.models:
-            raise ModelNotFoundError(entity)
-        outcome = []
-        for key, val in FileStorage.__objects.items():
-            if key.startswith(entity):
-                outcome.append(str(val))
-        return outcome
-
-    def single_modif(self, entity, UI, domain, val):
-        """Updates an instance"""
-        FS = FileStorage
-        if entity not in FS.models:
-            raise ModelNotFoundError(entity)
-
-        key = entity + "." + UI
-        if key not in FS.__objects:
-            raise InstanceNotFoundError(UI, entity)
-        if domain in ("id", "updated_at", "created_at"):
-            return
-        obj = FS.__objects[key]
-        try:
-            o1 = type(obj.__dict__[domain])
-            obj.__dict__[domain] = o1(val)
-        except KeyError:
-            obj.__dict__[domain] = val
-        finally:
-            obj.updated_at = datetime.now()
-            self.save()
-
+    def close(self):
+        """
+        Closes the storage and reloads any saved objects.
+        """
+        self.reload()
