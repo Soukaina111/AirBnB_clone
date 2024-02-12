@@ -9,6 +9,7 @@ import json
 from json.decoder import JSONDecodeError
 from datetime import datetime
 from models.engine.errors import *
+from models.user import User
 
 
 class FileStorage:
