@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ Starts the entry point of the Airbnb Project-Console
 """
-from models.engine.file_storage import storage
+from models import storage
 from cmd import Cmd
 from models.base_model import BaseModel
 from models.user import User
