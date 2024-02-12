@@ -9,6 +9,7 @@ from models import storage
 from models.base_model import BaseModel
 from models.user import User
 
+
 class HBNBCommand(cmd.Cmd):
     """
     Command interpreter class.
@@ -117,7 +118,8 @@ class HBNBCommand(cmd.Cmd):
                 cls_name = arg
                 cls = eval(cls_name)
                 if cls_name == 'User':
-                    print([str(instance) for key, instance in storage.all(User).items()])
+                    print([str(instance)
+                        for key, instance in storage.all(User).items()])
                 else:
                     print("** class doesn't exist **")
             except NameError:
