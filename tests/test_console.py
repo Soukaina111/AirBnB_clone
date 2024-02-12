@@ -199,6 +199,131 @@ class TestUpdateCommand(unittest.TestCase):
             self.assertIn("name: 'New Name'", output)
             self.assertIn("age: 25", output)
 
+class TestHBNBCommand(unittest.TestCase):
+    def setUp(self):
+        self.console = HBNBCommand()
+
+    def test_create_command(self):
+        # Test the create command
+        with patch('sys.stdout', new=StringIO()) as fake_out:
+            self.console.onecmd('create BaseModel')
+            output = fake_out.getvalue().strip()
+            self.assertEqual(len(output), 36)  # Check if the output is a valid UUID
+
+    def test_show_command(self):
+        # Test the show command
+        with patch('sys.stdout', new=StringIO()) as fake_out:
+            self.console.onecmd('create BaseModel')
+            output = fake_out.getvalue().strip()
+            instance_id = output
+
+            self.console.onecmd(f'show BaseModel {instance_id}')
+            output = fake_out.getvalue().strip()
+            self.assertIn(instance_id, output)
+
+    def test_destroy_command(self):
+        # Test the destroy command
+        with patch('sys.stdout', new=StringIO()) as fake_out:
+            self.console.onecmd('create BaseModel')
+            output = fake_out.getvalue().strip()
+            instance_id = output
+
+            self.console.onecmd(f'destroy BaseModel {instance_id}')
+            self.console.onecmd(f'show BaseModel {instance_id}')
+            output = fake_out.getvalue().strip()
+            self.assertIn("no instance found", output)
+
+    def test_all_command(self):
+        # Test the all command
+        with patch('sys.stdout', new=StringIO()) as fake_out:
+            self.console.onecmd('create BaseModel')
+            self.console.onecmd('create User')
+            self.console.onecmd('all')
+
+            output = fake_out.getvalue().strip()
+            self.assertIn("BaseModel", output)
+            self.assertIn("User", output)
+
+    def test_update_command(self):
+        # Test the update command
+        with patch('sys.stdout', new=StringIO()) as fake_out:
+            self.console.onecmd('create BaseModel')
+            output = fake_out.getvalue().strip()
+            instance_id = output
+
+            self.console.onecmd(f'update BaseModel {instance_id} name "New Name"')
+            self.console.onecmd(f'show BaseModel {instance_id}')
+            output = fake_out.getvalue().strip()
+            self.assertIn("name: 'New Name'", output)
+
+    def test_count_command(self):
+        # Test the count command
+        with patch('sys.stdout', new=StringIO()) as fake_out:
+            self.console.onecmd('create BaseModel')
+            self.console.onecmd('create BaseModel')
+            self.console.onecmd('create User')
+
+            self.console.onecmd('count BaseModel')
+            output = fake_out.getvalue().strip()
+            self.assertEqual(output, "2")
+
+            self.console.onecmd('count User')
+            output = fake_out.getvalue().strip()
+            self.assertEqual(output, "1")
+
+    def test_quit_command(self):
+        # Test the quit command
+        with self.assertRaises(SystemExit):
+            self.console.onecmd('quit')
+
+    def test_EOF_command(self):
+        # Test the EOF command
+        with self.assertRaises(SystemExit):
+            self.console.onecmd('EOF')
+
+class TestDestroyCommand(unittest.TestCase):
+    def setUp(self):
+        self.console = HBNBCommand()
+
+    def tearDown(self):
+        storage.delete_all()
+
+    def test_destroy_command_valid_instance(self):
+        # Test the destroy command with a valid instance
+        with patch('sys.stdout', new=StringIO()) as fake_out:
+            obj = BaseModel()
+            obj.save()
+            instance_id = obj.id
+
+            self.console.onecmd(f'destroy BaseModel {instance_id}')
+
+            output = fake_out.getvalue().strip()
+            self.assertEqual(output, '')
+
+            self.assertIsNone(storage.get('BaseModel', instance_id))
+
+    def test_destroy_command_invalid_instance(self):
+        # Test the destroy command with an invalid instance
+        with patch('sys.stdout', new=StringIO()) as fake_out:
+            self.console.onecmd('destroy BaseModel invalid_id')
+
+            output = fake_out.getvalue().strip()
+            self.assertEqual(output, '** no instance found **')
+
+    def test_destroy_command_missing_arguments(self):
+        # Test the destroy command with missing arguments
+        with patch('sys.stdout', new=StringIO()) as fake_out:
+            self.console.onecmd('destroy')
+
+            output = fake_out.getvalue().strip()
+            self.assertEqual(output, '** class name missing **')
+
+            self.console.onecmd('destroy BaseModel')
+
+            output = fake_out.getvalue().strip()
+            self.assertEqual(output, '** instance id missing **')
+
+
 
 if __name__ == '__main__':
     unittest.main()
