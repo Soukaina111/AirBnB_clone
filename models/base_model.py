@@ -21,6 +21,7 @@ class BaseModel:
             self.id = str(uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
+            models.storage.new(self)
             return
         """in case their is no ID"""
         if 'id' not in kwargs:
@@ -47,6 +48,7 @@ class BaseModel:
     def save(self):
         """stores the updated attribute"""
         self.updated_at = datetime.now()
+        models.storage.save()
 
     def to_dict(self):
         """displays the dictionary representation of self"""
