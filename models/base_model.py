@@ -49,7 +49,8 @@ class BaseModel:
             str: A string representation in
             the format [<class name>] (<id>) <__dict__>.
         """
-        return "[{}] ({}) {}".format(cls, self.id, self.__dict__)
+        cls1 = self.__class.__name__
+        return "[{}] ({}) {}".format(cls1, self.id, self.__dict__)
 
     def save(self):
         """
