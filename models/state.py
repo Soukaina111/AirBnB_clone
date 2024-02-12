@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-This file defines  stateModel class
+This file defines  state Model class
 """
 
 
