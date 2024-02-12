@@ -7,7 +7,7 @@ Initializes  the module global (singleton) variables
 """
 Retrieves the storage instance
 """
-from .engine.file_storage import FileStorage
+from models.engine.file_storage import FileStorage
 
 
 storage = FileStorage()
