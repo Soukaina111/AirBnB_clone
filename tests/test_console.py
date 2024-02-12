@@ -366,6 +366,39 @@ class TestShowCommand(unittest.TestCase):
             output = fake_out.getvalue().strip()
             self.assertEqual(output, '** instance id missing **')
 
+class TestCreateCommand(unittest.TestCase):
+    def setUp(self):
+        self.console = HBNBCommand()
+
+    def tearDown(self):
+        storage.delete_all()
+
+    def test_create_command_valid_class(self):
+        # Test the create command with a valid class
+        with patch('sys.stdout', new=StringIO()) as fake_out:
+            self.console.onecmd('create BaseModel')
+
+            output = fake_out.getvalue().strip()
+            instance_id = output
+
+            self.assertIsNotNone(storage.get('BaseModel', instance_id))
+
+    def test_create_command_invalid_class(self):
+        # Test the create command with an invalid class
+        with patch('sys.stdout', new=StringIO()) as fake_out:
+            self.console.onecmd('create InvalidClass')
+
+            output = fake_out.getvalue().strip()
+            self.assertEqual(output, '** class doesn\'t exist **')
+
+    def test_create_command_missing_arguments(self):
+        # Test the create command with missing arguments
+        with patch('sys.stdout', new=StringIO()) as fake_out:
+            self.console.onecmd('create')
+
+            output = fake_out.getvalue().strip()
+            self.assertEqual(output, '** class name missing **')
+
 
 if __name__ == '__main__':
     unittest.main()
