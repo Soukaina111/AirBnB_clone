@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """
-This file defines  the BaseModel class 
-that defines all common attributes/methods 
+This file defines the BaseModel
+that defines all common attributes/method
 for other classes
 """
 from uuid import uuid4
@@ -11,12 +11,11 @@ import models
 
 class BaseModel:
     """BaseModel class"""
-    
     def __init__(self, *args, **kwargs):
         """ Constructor of the  class  """
 
         """Initialize the attributes if no arguments was passed"""
-        if  not kwargs:
+        if not kwargs:
             self.id = str(uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
@@ -42,7 +41,7 @@ class BaseModel:
     def __str__(self):
         """new str representation of self"""
         newrep = "[{}] ({}) {}"
-        return newrep.format(type(self).__name__,self.id,self.__dict__)
+        return newrep.format(type(self).__name__, self.id, self.__dict__)
 
     def save(self):
         """stores the updated attribute"""
