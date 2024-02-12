@@ -2,63 +2,40 @@
 """The FileStorage"""
 
 import json
-from os.path import exists
-from models.user import User
-from models.base_model import BaseModel
 
 class FileStorage:
     """
-    Serializes instances to a JSON file and deserializes JSON files to instances.
-
-    Private Class Attributes:
-        __file_path (str): Path to the JSON file.
-        __objects (dict): Dictionary to store all objects by <class name>.id.
-
-    Public Instance Methods:
-        all(self): Returns the dictionary __objects.
-        new(self, obj): Sets the obj with the key <obj class name>.id in __objects.
-        save(self): Serializes __objects to the JSON file.
-        reload(self): Deserializes the JSON file to __objects.
+    Serializes instances to a JSON file and deserializes JSON file to instances.
     """
 
     __file_path = "file.json"
     __objects = {}
-
-
-    CLASSES = {
-        "BaseModel": BaseModel,
-        "User": User
-        # Add other classes here if needed
-    }
 
     def all(self):
         """
         Returns the dictionary __objects.
 
         Returns:
-            dict: The dictionary __objects.
+            dict: The dictionary containing all objects stored by <class name>.id.
         """
         return self.__objects
 
     def new(self, obj):
         """
-        Sets the obj with the key <obj class name>.id in __objects.
+        Sets in __objects the given object with key <obj class name>.id.
 
         Args:
-            obj (BaseModel): The object to be added to __objects.
+            obj: The object to be stored.
         """
         key = "{}.{}".format(obj.__class__.__name__, obj.id)
         self.__objects[key] = obj
 
     def save(self):
         """
-        Serializes __objects to the JSON file.
+        Serializes __objects to the JSON file (__file_path).
         """
-        obj_dict = {}
-        for key, obj in self.__objects.items():
-            obj_dict[key] = obj.to_dict()
-
-        with open(self.__file_path, 'w') as file:
+        obj_dict = {key: obj.to_dict() for key, obj in self.__objects.items()}
+        with open(self.__file_path, "w") as file:
             json.dump(obj_dict, file)
 
     def reload(self):
