@@ -26,7 +26,6 @@ class TestPrompting(unittest.TestCase):
             output = fake_out.getvalue().strip()
             self.assertEqual(output, custom_prompt)
 
-
 class TestHelpMessages(unittest.TestCase):
     def setUp(self):
         self.console = HBNBCommand()
@@ -86,6 +85,119 @@ class TestHelpMessages(unittest.TestCase):
             self.console.onecmd('help help')
             output = fake_out.getvalue().strip()
             self.assertIn("Show help information for a specific command", output)
+
+class TestUpdateCommand(unittest.TestCase):
+    def setUp(self):
+        self.console = HBNBCommand()
+
+    def test_update_existing_instance(self):
+        # Test updating an existing instance
+        with patch('sys.stdout', new=StringIO()) as fake_out:
+            # Create a new instance
+            self.console.onecmd('create BaseModel')
+            output = fake_out.getvalue().strip()
+            instance_id = output
+
+            # Update the existing instance
+            self.console.onecmd(f'update BaseModel {instance_id} name "New Name"')
+
+            # Check if the instance was updated
+            self.console.onecmd(f'show BaseModel {instance_id}')
+            output = fake_out.getvalue().strip()
+            self.assertIn("name: 'New Name'", output)
+
+    def test_update_nonexistent_instance(self):
+        # Test updating a nonexistent instance
+        with patch('sys.stdout', new=StringIO()) as fake_out:
+            # Update a nonexistent instance
+            self.console.onecmd('update BaseModel 1234 name "New Name"')
+
+            # Check if the error message is displayed
+            output = fake_out.getvalue().strip()
+            self.assertIn("no instance found", output)
+
+    def test_update_attribute(self):
+        # Test updating a specific attribute of an instance
+        with patch('sys.stdout', new=StringIO()) as fake_out:
+            # Create a new instance
+            self.console.onecmd('create BaseModel')
+            output = fake_out.getvalue().strip()
+            instance_id = output
+
+            # Set an initial attribute value
+            self.console.onecmd(f'update BaseModel {instance_id} name "Initial Name"')
+
+            # Update the attribute to a new value
+            self.console.onecmd(f'update BaseModel {instance_id} name "Updated Name"')
+
+            # Check if the attribute value was updated
+            self.console.onecmd(f'show BaseModel {instance_id}')
+            output = fake_out.getvalue().strip()
+            self.assertIn("name: 'Updated Name'", output)
+
+    def test_update_multiple_attributes(self):
+        # Test updating multiple attributes of an instance
+        with patch('sys.stdout', new=StringIO()) as fake_out:
+            # Create a new instance
+            self.console.onecmd('create BaseModel')
+            output = fake_out.getvalue().strip()
+            instance_id = output
+
+            # Update multiple attributes
+            self.console.onecmd(f'update BaseModel {instance_id} name "New Name" age 25')
+
+            # Check if the attributes were updated
+            self.console.onecmd(f'show BaseModel {instance_id}')
+            output = fake_out.getvalue().strip()
+            self.assertIn("name: 'New Name'", output)
+            self.assertIn("age: 25", output)
+
+    def test_update_missing_value(self):
+        # Test updating an attribute with a missing value
+        with patch('sys.stdout', new=StringIO()) as fake_out:
+            # Create a new instance
+            self.console.onecmd('create BaseModel')
+            output = fake_out.getvalue().strip()
+            instance_id = output
+
+            # Update an attribute with a missing value
+            self.console.onecmd(f'update BaseModel {instance_id} name')
+
+            # Check if the error message is displayed
+            output = fake_out.getvalue().strip()
+            self.assertIn("value is missing", output)
+
+    def test_update_invalid_attribute(self):
+        # Test updating an invalid attribute of an instance
+        with patch('sys.stdout', new=StringIO()) as fake_out:
+            # Create a new instance
+            self.console.onecmd('create BaseModel')
+            output = fake_out.getvalue().strip()
+            instance_id = output
+
+            # Update an invalid attribute
+            self.console.onecmd(f'update BaseModel {instance_id} invalid_attr "New Value"')
+
+            # Check if the error message is displayed
+            output = fake_out.getvalue().strip()
+            self.assertIn("attribute not found", output)
+
+    def test_update_with_dict(self):
+        # Test updating attributes using a dictionary
+        with patch('sys.stdout', new=StringIO()) as fake_out:
+            # Create a new instance
+            self.console.onecmd('create BaseModel')
+            output = fake_out.getvalue().strip()
+            instance_id = output
+
+            # Update attributes using a dictionary
+            self.console.onecmd(f'update BaseModel {instance_id} {"{"}name: "New Name", age: 25{"}"}')
+
+            # Check if the attributes were updated
+            self.console.onecmd(f'show BaseModel {instance_id}')
+            output = fake_out.getvalue().strip()
+            self.assertIn("name: 'New Name'", output)
+            self.assertIn("age: 25", output)
 
 
 if __name__ == '__main__':
