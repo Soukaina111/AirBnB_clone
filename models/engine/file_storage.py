@@ -8,6 +8,7 @@ of the project AirBnB.
 import json
 from json.decoder import JSONDecodeError
 from datetime import datetime
+from models.engine.errors import *
 
 
 class FileStorage:
@@ -106,5 +107,5 @@ class FileStorage:
         except KeyError:
             obj.__dict__[domain] = val
         finally:
-            obj.updated_at = datetime.utcnow()
+            obj.updated_at = datetime.now()
             self.save()
