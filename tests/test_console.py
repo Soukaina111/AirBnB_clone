@@ -399,6 +399,25 @@ class TestCreateCommand(unittest.TestCase):
             output = fake_out.getvalue().strip()
             self.assertEqual(output, '** class name missing **')
 
+class TestExitCommand(unittest.TestCase):
+    def setUp(self):
+        self.console = HBNBCommand()
+
+    def test_exit_command(self):
+        # Test the exit command
+        with self.assertRaises(SystemExit):
+            self.console.onecmd('exit')
+
+    def test_quit_command(self):
+        # Test the quit command
+        with self.assertRaises(SystemExit):
+            self.console.onecmd('quit')
+
+    def test_EOF_command(self):
+        # Test the EOF command
+        with self.assertRaises(SystemExit):
+            self.console.onecmd('EOF')
+
 
 if __name__ == '__main__':
     unittest.main()
