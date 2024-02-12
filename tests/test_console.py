@@ -323,6 +323,48 @@ class TestDestroyCommand(unittest.TestCase):
             output = fake_out.getvalue().strip()
             self.assertEqual(output, '** instance id missing **')
 
+class TestShowCommand(unittest.TestCase):
+    def setUp(self):
+        self.console = HBNBCommand()
+
+    def tearDown(self):
+        storage.delete_all()
+
+    def test_show_command_valid_instance(self):
+        # Test the show command with a valid instance
+        with patch('sys.stdout', new=StringIO()) as fake_out:
+            obj = BaseModel()
+            obj.save()
+            instance_id = obj.id
+
+            self.console.onecmd(f'show BaseModel {instance_id}')
+
+            output = fake_out.getvalue().strip()
+            self.assertIn(instance_id, output)
+            self.assertIn("'id':", output)
+            self.assertIn("'created_at':", output)
+            self.assertIn("'updated_at':", output)
+
+    def test_show_command_invalid_instance(self):
+        # Test the show command with an invalid instance
+        with patch('sys.stdout', new=StringIO()) as fake_out:
+            self.console.onecmd('show BaseModel invalid_id')
+
+            output = fake_out.getvalue().strip()
+            self.assertEqual(output, '** no instance found **')
+
+    def test_show_command_missing_arguments(self):
+        # Test the show command with missing arguments
+        with patch('sys.stdout', new=StringIO()) as fake_out:
+            self.console.onecmd('show')
+
+            output = fake_out.getvalue().strip()
+            self.assertEqual(output, '** class name missing **')
+
+            self.console.onecmd('show BaseModel')
+
+            output = fake_out.getvalue().strip()
+            self.assertEqual(output, '** instance id missing **')
 
 
 if __name__ == '__main__':
