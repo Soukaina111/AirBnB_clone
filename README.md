@@ -42,6 +42,11 @@ How to Serialize and Deserialize a Class:
   - With `pickle`, you can use the `pickle.dump()` function to serialize an object to a file, and `pickle.load()` to deserialize it.
   - With `json`, you can use the `json.dump()` function to serialize an object to a file in JSON format, and `json.load()` to deserialize it.
 
+How to Write and Read a JSON File:
+- To write and read a JSON file in Python, you can use the `json` module.
+  - To write a JSON file, you can use the `json.dump()` function, passing the data and a file object.
+  - To read a JSON file, you can use the `json.load()` function, passing a file object.
+
 
 Documented commands (type help <topic>):
 ========================================
