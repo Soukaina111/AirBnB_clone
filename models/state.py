@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-This file defines stateModel class
+This creates a User class
 """
 
 
@@ -8,7 +8,9 @@ from models.base_model import BaseModel
 
 
 class State(BaseModel):
-    # state model
-
-    #  Public Atrributes
+    """
+    Represents a state.
+    Attributes:
+        name (str): The state name.
+    """
     name: str = ''
