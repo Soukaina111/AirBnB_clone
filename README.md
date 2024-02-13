@@ -92,6 +92,10 @@ Project implementation phases:
   6. Implementing a data model to manage object creation, updating, destruction, etc., through a console/command interpreter.
   7. Storing and persisting objects to files using JSON files.
 
+General Execution:
+- To execute the project, run `./console.py` in the command line.
+- The command prompt will show `(hbnb)` to indicate that the console is ready to accept commands.
+- You can use the `help` command to get information about available commands and their usage.
 
 Documented commands (type help <topic>):
 ========================================
