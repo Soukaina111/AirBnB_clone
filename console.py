@@ -114,6 +114,18 @@ class HBNBCommand(Cmd):
             except InstanceNotFoundError:
                 print("** no instance found **")
 
+def do_count(self, line):
+    """Retrieves number of instances of a class"""
+    input = line.split()
+    if len(input) == 1:
+        try:
+            count = storage.count(*input)
+            print(count)
+        except ModelNotFoundError:
+            print("** class doesn't exist **")
+    else:
+        print("** Invalid command usage. Please provide a class name **")
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
