@@ -82,6 +82,17 @@ How to Handle Named Arguments in a Function:
 - The `models/engine` directory will contain all storage classes that use the same prototype. For now, there will be only one file, `file_storage.py`, which represents the file storage engine.
 
 
+Project implementation phases:
+- Phase 1: The first phase focuses on creating a powerful storage system that abstracts the storage and persistence of objects. This phase involves:
+  1. Implementing a parent class (`BaseModel`) responsible for initializing, serializing, and deserializing instances.
+  2. Establishing a simple flow of serialization/deserialization: Instance <-> Dictionary <-> JSON string <-> File.
+  3. Creating classes for all the objects used in the AirBnB project (`User`, `State`, `City`, `Place`, etc.) that inherit from `BaseModel`.
+  4. Developing the first abstracted storage engine for the project, which is the file storage.
+  5. Creating unit tests to validate all the classes and the storage engine.
+  6. Implementing a data model to manage object creation, updating, destruction, etc., through a console/command interpreter.
+  7. Storing and persisting objects to files using JSON files.
+
+
 Documented commands (type help <topic>):
 ========================================
 EOF  help  quit
