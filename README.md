@@ -5,11 +5,10 @@ The objective of the full-stack software engineering program is to deploy a repl
 The completed version of this project will include the following features:
 
 
-A command interpreter to manipulate data without a visual interface, like a shell (for development and debugging)
-A website (front-end) with static and dynamic functionalities
-A comprehensive database to manage the backend functionalities
-An API that provides a communication interface between the front and backend of the system.
-As you navigate this code base, it is great to note the following concepts, while completing this project.
+1. Command Interpreter: The project includes a command interpreter that allows data manipulation without a visual interface, similar to a shell. This interpreter facilitates development and debugging tasks.
+
+2. Database: The project incorporates a comprehensive database to manage the backend functionalities. This database stores and organizes the data needed for the system's operations.
+
 
 How to create a Python package
 How to create a command interpreter in Python using the cmd module
@@ -30,8 +29,10 @@ attributes: id, created_at and updated_at
 methods: save() and to_json()
 models/engine directory will contain all storage classes (using the same prototype). For the moment I will have only one: file_storage.py.
 The project's implementation will happen in the following phases:
+
 Phase 1
 The first phase is to manipulate a powerful storage system to give an abstraction between objects and how they are stored and persisted. To achieve this, I will:
+
 
 put in place a parent class (called BaseModel) to take care of the initialization, serialization and deserialization of my future instances
 create a simple flow of serialization/deserialization: Instance <-> Dictionary <-> JSON string <-> file
