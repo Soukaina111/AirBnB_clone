@@ -53,6 +53,18 @@ How to Manage Datetime:
   - Use methods like `datetime.strftime()` to format datetime objects as strings, and `datetime.strptime()` to parse strings into datetime objects.
   - Perform various operations on datetime objects, such as arithmetic, comparisons, and extracting specific components like year, month, day, etc.
 
+What is *args and How to Use It:
+- In Python, `*args` is used to pass a variable number of non-keyword arguments to a function.
+- It allows you to pass any number of positional arguments, which are then accessible as a tuple inside the function.
+- To use `*args`, define a parameter with an asterisk before its name in the function definition, like `def my_function(*args):`.
+- Inside the function, you can iterate over the `args` tuple to access the passed arguments.
+
+What is **kwargs and How to Use It:
+- In Python, `**kwargs` is used to pass a variable number of keyword arguments to a function.
+- It allows you to pass any number of keyword arguments, which are then accessible as a dictionary inside the function.
+- To use `**kwargs`, define a parameter with two asterisks before its name in the function definition, like `def my_function(**kwargs):`.
+- Inside the function, you can access the keyword arguments as key-value pairs in the `kwargs` dictionary.
+
 
 Documented commands (type help <topic>):
 ========================================
