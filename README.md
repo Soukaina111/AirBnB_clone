@@ -71,6 +71,17 @@ What is an UUID:
 - In Python, you can generate UUIDs using the `uuid` module.
   - Use the `uuid.uuid4()` function to generate a random UUID.
 
+
+How to Handle Named Arguments in a Function:
+- In Python, named arguments refer to passing arguments to a function using their parameter names.
+- When calling a function,Files and directories in project structure:
+- The `models` directory will contain all classes used for the entire project. In an object-oriented programming (OOP) project, a class represents the representation of an object/instance. 
+- The `tests` directory will contain all unit tests for the project.
+- The `console.py` file serves as the entry point of the command interpreter.
+- The `models/base_model.py` file is the base class for all the project's models. It includes common elements such as attributes (`id`, `created_at`, and `updated_at`) and methods (`save()` and `to_json()`).
+- The `models/engine` directory will contain all storage classes that use the same prototype. For now, there will be only one file, `file_storage.py`, which represents the file storage engine.
+
+
 Documented commands (type help <topic>):
 ========================================
 EOF  help  quit
