@@ -47,6 +47,12 @@ How to Write and Read a JSON File:
   - To write a JSON file, you can use the `json.dump()` function, passing the data and a file object.
   - To read a JSON file, you can use the `json.load()` function, passing a file object.
 
+How to Manage Datetime:
+- In Python, you can manage datetime using the `datetime` module.
+  - Use the `datetime.datetime` class to create datetime objects representing specific dates and times.
+  - Use methods like `datetime.strftime()` to format datetime objects as strings, and `datetime.strptime()` to parse strings into datetime objects.
+  - Perform various operations on datetime objects, such as arithmetic, comparisons, and extracting specific components like year, month, day, etc.
+
 
 Documented commands (type help <topic>):
 ========================================
