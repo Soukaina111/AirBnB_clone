@@ -18,6 +18,15 @@ How to Create a Python Package:
   4. Use the `import` statement to import modules and classes from one part of the package to another.
 
 
+How to Create a Command Interpreter in Python using the cmd Module:
+- To create a command interpreter in Python using the `cmd` module, you can follow these steps:
+  1. Import the `cmd` module.
+  2. Create a class that inherits from the `cmd.Cmd` class.
+  3. Override the `do_*` methods to handle specific commands.
+  4. Override the `help_*` methods to provide help messages for each command.
+  5. Instantiate your class and call the `cmdloop()` method to start the command interpreter.
+
+
 Documented commands (type help <topic>):
 ========================================
 EOF  help  quit
