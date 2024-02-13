@@ -1,5 +1,9 @@
-"""""""description of the project"""""""""""""""
-The ALX-Holberton B&B sums up the implementation of my four months of studies at the ALX-Holberton School - the fullstack software engineering program. The goal of the project is to deploy a replica of the Airbnb Website using my server. The final version of this project will have:
+# The AirBnB Clone Project
+##"""""""description of the project"""""""""""""""
+#
+The objective of the full-stack software engineering program is to deploy a replica of the Airbnb Console using my own server. 
+The completed version of this project will include the following features:
+
 
 A command interpreter to manipulate data without a visual interface, like a shell (for development and debugging)
 A website (front-end) with static and dynamic functionalities
