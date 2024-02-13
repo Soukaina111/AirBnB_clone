@@ -66,7 +66,6 @@ What is **kwargs and How to Use It:
 - Inside the function, you can access the keyword arguments as key-value pairs in the `kwargs` dictionary.
 
 
-
 What is an UUID:
 - UUID stands for Universally Unique Identifier. It's a 128-bit identifier that is unique across all devices and all time.
 - In Python, you can generate UUIDs using the `uuid` module.
