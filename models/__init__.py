@@ -1,13 +1,13 @@
 #!/usr/bin/python3
+"""
+For Initializes  the module global variables
+"""
 
-"""
-Initializes  the module global (singleton) variables
-"""
 
-"""
-Retrieves the storage instance
-"""
 from models.engine.file_storage import FileStorage
+"""
+from models.engine import FileStorage
+"""
 
 
 storage = FileStorage()

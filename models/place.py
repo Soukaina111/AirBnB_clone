@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """
-this is  the Place class,
-child class of  BaseModel
+This creates a Place class
 """
 
 
@@ -10,9 +9,21 @@ from typing import List
 
 
 class Place(BaseModel):
-    # Place Model
-
-    # Public Attributes
+    """
+    Represents a place.
+    Attributes:
+        city_id (str): The city ID.
+        user_id (str): The user ID.
+        name (str): The place name.
+        description (str): The place description .
+        number_rooms (int): The rooms number.
+        number_bathrooms (int): The bathrooms number.
+        max_guest (int): Max number of guests.
+        price_by_night (int): The price per night.
+        latitude (float): The latitude coordinate.
+        longitude (float): The longitude coordinate.
+        amenity_ids (list): The amenity IDs list.
+    """
     city_id: str = ''
     user_id: str = ''
     name: str = ''

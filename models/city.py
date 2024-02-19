@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """
-Defines City model and
-inherits from BaseMode
+This creates a User class.
 """
 
 
@@ -9,8 +8,11 @@ from models.base_model import BaseModel
 
 
 class City(BaseModel):
-    # City Model
-
-    # Public Atributes
+    """
+    Represents a city.
+    Attributes:
+        state_id (str): The state ID.
+        name (str): The city name.
+    """
     state_id: str = ''
     name: str = ''
